@@ -8,6 +8,7 @@ const state = {
     id: null,
     username: null,
     email: null,
+    admin: null
   },
 };
 const getters = {
@@ -19,6 +20,9 @@ const getters = {
   },
   getUserID(state) {
     return state.user?.id;
+  },
+  userIsAdmin(state){
+    return state.user?.admin;
   },
   isLoggedIn(state) {
     const loggedOut =
@@ -106,6 +110,7 @@ const mutations = {
       id: null,
       username: null,
       email: null,
+      admin: null
     };
     state.auth_token = null;
     localStorage.removeItem("auth_token");
