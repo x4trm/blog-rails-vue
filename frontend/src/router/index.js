@@ -3,6 +3,9 @@ import Posts from '../views/Posts'
 import Show from '../views/Show'
 import CreatePost from '../views/CreatePost'
 import UpdatePost from '../views/UpdatePost'
+import SignUp from '../views/SignUp'
+import SignIn from '../views/SignIn'
+
 const routes = [
   {
     path: '/',
@@ -26,7 +29,16 @@ const routes = [
     name: 'CreatePost',
     component: CreatePost
   },
-
+  {
+    path:'/signup',
+    name:'SignUp',
+    component: SignUp
+  },
+  {
+    path:'/signin',
+    name:'SignIn',
+    component: SignIn
+  }
 
 ]
 

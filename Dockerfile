@@ -5,7 +5,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -y curl gnupg2 build-essential sudo
 RUN apt-get install postgresql-contrib libpq-dev -y
-RUN apt-get -y install patch bzip2 gawk g++ gcc autoconf automake bison libc6-dev libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool libyaml-dev make patch pkg-config sqlite3 zlib1g-dev libgmp-dev libreadline-dev libssl-dev
+RUN apt-get -y install patch bzip2 gawk g++ gcc vim autoconf automake bison libc6-dev libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool libyaml-dev make patch pkg-config sqlite3 zlib1g-dev libgmp-dev libreadline-dev libssl-dev
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 RUN apt-get install libfontconfig libxrender1 libjpeg-turbo8 wkhtmltopdf -y
 
