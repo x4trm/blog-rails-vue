@@ -4,7 +4,8 @@ class CommentsController < ApplicationController
     
     # GET /posts/:post_id/comments
     def index
-      @comments = @post.comments
+      # @comments = @post.comments
+      @comments = @post.comments.paginate(:page => params[:page], :per_page => 15)
       render json: @comments
     end
   

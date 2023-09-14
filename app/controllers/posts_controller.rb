@@ -3,7 +3,8 @@ class PostsController < ApplicationController
     before_action :authenticate_user!, except: %i[show index]
     # GET /posts
     def index
-      @posts = Post.all.order(created_at: :desc)
+      @posts = Post.paginate(:page => params[:page], :per_page => 2)
+      # @posts = Post.all.order(created_at: :desc)
       render json: @posts
     end
   
