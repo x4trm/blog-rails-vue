@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
     before_action :set_post, only: [:index, :create]
     before_action :set_comment, only: [:show, :edit, :update, :destroy]
-  
+    
     # GET /posts/:post_id/comments
     def index
       @comments = @post.comments
@@ -50,6 +50,6 @@ class CommentsController < ApplicationController
     end
   
     def comment_params
-      params.require(:comment).permit(:body)
+      params.require(:comment).permit(:body, :user_id)
     end
   end

@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from '@/router';
 
 const BASE_URL = "http://0.0.0.0:3000/";
 
@@ -56,6 +57,7 @@ const actions = {
           reject(error);
         });
     });
+    router.push("/")
   },
   logoutUser({ commit }) {
     const config = {
@@ -74,6 +76,7 @@ const actions = {
           reject(error);
         });
     });
+    router.push("/")
   },
   loginUserWithToken({ commit }, payload) {
     const config = {

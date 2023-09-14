@@ -10,13 +10,14 @@
               <textarea type="text" v-model="body" placeholder="Content..." class="form-control"/>
           </div>
           <div class="actions">
-              <input type="submit" value="Submit" class="btn btn-secondary mt-3"/>
+              <input type="submit" value="Add" class="btn btn-secondary mt-3"/>
           </div>
       </form>
     </div>
   </template>
   
   <script>
+  import router from '@/router';
   import { mapActions, mapGetters } from 'vuex';
   
   export default {
@@ -24,22 +25,30 @@
       data() {
           return {
               title: "",
-              body: ""
+              body: "",
           }
       },
+      computed:{
+        ...mapGetters(['userIsAdmin','getUserID'])
+      },    
       methods: {
           ...mapActions(['addPost']),
           onSubmit() {
               const formData = new FormData()
               formData.append('post[title]', this.title)
               formData.append('post[body]', this.body)
-  
+              formData.append('post[user_id]',this.getUserID)
               this.addPost(formData)
       
               this.title = "";
               this.body = "";
           }
       },
+      created(){
+        if(this.userIsAdmin == 'false' || !this.userIsAdmin){
+            router.push("/signin")
+        }
+      }
   }
   </script>
   

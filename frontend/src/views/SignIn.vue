@@ -16,7 +16,7 @@
 <script>
 import { mapActions,mapGetters } from 'vuex';
 import "@/store/index.js"
-
+import router from '@/router';
 export default {
     computed: {
         ...mapGetters(["getAuthToken", "getUserEmail", "getUserID", "isLoggedIn"]),
@@ -40,6 +40,7 @@ export default {
             this.loginUser(authData)
             this.email = ''
             this.password = ''
+            router.push("/")
         }
     },
     // mounted(){

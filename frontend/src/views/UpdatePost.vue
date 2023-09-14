@@ -7,7 +7,7 @@
           </div>
   
           <div class="field mb-3">
-              <input type="text" v-model="body" class="form-control"/>
+              <textarea type="text" v-model="body" class="form-control"/>
           </div>
   
           <div class="actions">

@@ -19,6 +19,7 @@
 <script>
     import "@/store/index.js";
     import { mapActions, mapGetters } from "vuex";
+    import router from '@/router';
   export default {
       data(){
           return{
@@ -41,6 +42,7 @@
               this.email = ''
               this.password = ''
               this.password_confirmation = ''
+              router.push("/signin")
           }
       }
   }

@@ -12,9 +12,9 @@
                         body2: post.body  
                         }
                     }" class="btn btn-primary me-1" >Update</router-link> -->
-                    <router-link :to="{ name: 'UpdatePost'}" class="btn btn-primary me-1" >Update</router-link>
-                <button @click="removePost()" class="btn btn-danger" >Delete</button>
-                <button @click="createPDF" class="btn btn-warning me-1">PDF</button>
+                    <router-link v-if="userIsAdmin" :to="{ name: 'UpdatePost'}" class="btn btn-primary me-1" >Update</router-link>
+                <button v-if="userIsAdmin" @click="removePost()" class="btn btn-danger" >Delete</button>
+                <button v-if="userIsAdmin" @click="createPDF" class="btn btn-warning me-1">PDF</button>
             </div>
         </div>
     
@@ -23,20 +23,25 @@
         <div v-for="comment in allComments" :key="comment.id" class="card w-75 mb-3 mx-auto bg-light">
             <div class="card-body">         
                 <p class="card-text"> {{ comment.body }} </p>
-                <span @click="removeComment(comment.id)" class="btn btn-danger" >Delete</span>
+                <span v-if="userIsAdmin" @click="removeComment(comment.id)" class="btn btn-danger" >Delete</span>
             </div>
         </div>
         <br />
+        <div v-if="isLoggedIn">
         <h4 class="fw-bold ">Add comment</h4>
-        <form @submit.prevent="onSubmit" class="w-75 mb-3 mx-auto">
-            <div class="field mb-3">
-                <textarea type="text" v-model="comment" placeholder="Conmment..." class="form-control"/>
-            </div>
-    
-            <div class="actions">
-                <input type="submit" value="Submit" class="btn btn-secondary"/>
-            </div>
-        </form>    
+            <form @submit.prevent="onSubmit" class="w-75 mb-3 mx-auto">
+                <div class="field mb-3">
+                    <textarea type="text" v-model="comment" placeholder="Conmment..." class="form-control"/>
+                </div>
+        
+                <div class="actions">
+                    <input type="submit" value="Submit" class="btn btn-secondary"/>
+                </div>
+            </form>    
+        </div>
+        <div v-else>
+            <h4>If you want add comment. Sign In!</h4>
+        </div>
     </div>
     </template>
     
@@ -61,18 +66,19 @@
                 this.deletePost(post);
             },
             removeComment(commentId){
-                const post = {
+                const comment = {
                     postId: this.id,
                     commentId: commentId
                 }
-                this.deleteComment(post)
+                this.deleteComment(comment)
             },
             onSubmit(){
-                const post = {
+                const comment = {
                     body: this.comment,
-                    id: this.id
+                    id: this.id,
+                    
                 }
-                this.addComment(post)
+                this.addComment(comment)
                 this.comment=''
             },
             createPDF(){
@@ -85,7 +91,7 @@
             }
         },
         computed: {
-            ...mapGetters(['allPosts','allComments']),
+            ...mapGetters(['allPosts','allComments','isLoggedIn','userIsAdmin','getUserID']),
         },
         created() {
             this.fetchPosts();

@@ -1,9 +1,9 @@
 class PostsController < ApplicationController
     before_action :set_post, only: %i[show edit update destroy]
-  
+    before_action :authenticate_user!, except: %i[show index]
     # GET /posts
     def index
-      @posts = Post.all
+      @posts = Post.all.order(created_at: :desc)
       render json: @posts
     end
   
@@ -49,7 +49,7 @@ class PostsController < ApplicationController
     # end
   
     def post_params
-      params.require(:post).permit(:title, :body)
+      params.require(:post).permit(:title, :body, :user_id)
     end
   end
   

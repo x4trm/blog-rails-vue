@@ -2,18 +2,14 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container-fluid">
   <router-link to="/" class="navbar-brand">Blog</router-link>
-
-  <li>{{isLoggedIn}}</li>
-  <li>Admin: {{ userIsAdmin }}</li>
-        <ul v-if="!isLoggedIn" class="navbar-nav">
-          <li><router-link class="nav-link active" to="/signup">Sign Up</router-link></li>
-          <li><router-link class="nav-link active" to="/signin">Sign In</router-link></li>
-
-        </ul>
-        <ul v-else class="navbar-nav">
-          <li><router-link class="nav-link active" to="/posts/new">New Post</router-link></li>
-          <li><span class="nav-link active" @click="logoutUser">Logout</span></li>
-        </ul>
+  <ul v-if="!isLoggedIn" class="navbar-nav">
+    <li><router-link class="nav-link active" to="/signup">Sign Up</router-link></li>
+    <li><router-link class="nav-link active" to="/signin">Sign In</router-link></li>
+  </ul>
+   <ul v-else class="navbar-nav">
+     <li v-if="userIsAdmin"><router-link class="nav-link active" to="/posts/new">New Post</router-link></li>
+     <li><span class="nav-link active" @click="logoutUser">Logout</span></li>
+   </ul>
 </div>
 </nav>
 </template>
