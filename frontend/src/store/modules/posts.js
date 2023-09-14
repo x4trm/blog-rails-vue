@@ -17,8 +17,8 @@ const getters = {
 }
 
 const actions = {
-    async fetchPosts({commit}){
-        const response = await axios.get(API_URL)
+    async fetchPosts({commit},page){
+        const response = await axios.get(API_URL+`?page=${page ? page : 1}`)
         commit('setPosts',response.data)
     },
     async fetchComments({commit},id){
