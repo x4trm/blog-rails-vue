@@ -3,11 +3,11 @@
       <h2>Edit Post</h2>
           <form @submit.prevent="onSubmit">
           <div class="field mb-3">
-              <input type="text" v-model="title" class="form-control"/>
+              <input type="text" v-model="post.title" class="form-control"/>
           </div>
   
           <div class="field mb-3">
-              <textarea type="text" v-model="body" class="form-control"/>
+              <textarea type="text" v-model="post.body" class="form-control"/>
           </div>
   
           <div class="actions">
@@ -19,29 +19,36 @@
   
   <script>
   import { mapActions, mapGetters } from 'vuex';
-  import router from "@/router"
   
   export default {
-      name:"UpdatePost",
-      props:['id','title2','body2'],
-      data(){
+    name:"UpdatePost",
+    props:['id'],
+    data(){
           return{
-              title: this.title2,
-              body: this.body2
+              post:""
           }
       },
       methods:{
-          ...mapActions(['updatePost']),
+          ...mapActions(['updatePost','fetchPosts']),
           onSubmit(){
               const post = {
                   id: this.id,
-                  title: this.title,
-                  body: this.body
+                  title: this.post.title,
+                  body: this.post.body
               }
               this.updatePost(post)
               this.$router.push('/')
           }
-      }
+      },
+      created() {
+            this.fetchPosts();
+        },
+        computed: {
+            ...mapGetters(['allPosts']),
+        },
+        mounted() {
+            this.post = this.allPosts.find(post => post.id == this.id)
+        }
   }
   </script>
   
