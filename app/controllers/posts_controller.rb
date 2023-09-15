@@ -6,6 +6,7 @@ class PostsController < ApplicationController
       @posts = Post.paginate(:page => params[:page], :per_page => 2)
       # @posts = Post.all.order(created_at: :desc)
       render json: @posts
+      authorize @posts
     end
   
     # GET /posts/1
@@ -16,6 +17,7 @@ class PostsController < ApplicationController
     # POST /posts
     def create
       @post = Post.new(post_params)
+      authorize @post
   
       if @post.save
         render json: @post, status: :created
@@ -35,6 +37,7 @@ class PostsController < ApplicationController
   
     # DELETE /posts/1
     def destroy
+      authorize @post
       @post.destroy
       head :no_content
     end
