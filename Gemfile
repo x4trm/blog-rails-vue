@@ -52,3 +52,5 @@ gem "devise-jwt", "~> 0.11.0"
 
 ## Gemfile for Rails 3+, Sinatra, or Merb
 gem 'will_paginate', '~> 3.3.0'
+
+gem "pundit"
