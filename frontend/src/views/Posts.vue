@@ -8,56 +8,61 @@
             <router-link class="btn btn-primary" :to="{name:'Show',params:{id:post.id}}">Read More</router-link>
         </div>
       </div>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item"><button @click="prevPage" class="page-link">Previous</button></li>
-            <li class="page-item"><button @click="nextPage" class="page-link">Next</button></li>
-        </ul>
-        </nav>
+      <p>Total posts: {{ getTotalPosts }}</p>
+      <p>(For debug) Current page: {{ getCurrentPage }}</p>
+      <vue-awesome-paginate
+        v-model="getCurrentPage"
+        @click="onClickHandler"
+        :items-per-page="2"
+        :max-pages-shown="5"
+        :total-items="getTotalPosts"
+      />
     </div>
     </template>
     
     <script>
     import {mapGetters, mapActions} from 'vuex';
-    import Pagination from '../components/Pagination.vue';
     export default {
         name: 'Posts',
-        components:{
-            Pagination
-        },
-        data(){
-            return{
-                page:1
-            }
-        },
         methods: {
-            ...mapActions(['fetchPosts']),
-            nextPage(){
-                console.log(this.page)
-                return this.page++
-            },
-            prevPage(){
-                if(this.page > 1){
-                    this.page--
-                }else{
-                    this.page = 1
-                }
-                return this.page
+            ...mapActions(['fetchTotalPosts','fetchPosts','clickPaginate']),
+            onClickHandler(page){
+                this.clickPaginate(page)
+                this.fetchPosts(page)
             }
         },
         computed: {
-            ...mapGetters(['allPosts']),
-            // getPage(){
-            //     return this.page
-            // }
+            ...mapGetters(['allPosts','getTotalPosts','getCurrentPage'])
         },
         created() {
-            this.fetchPosts(this.page);
+            this.fetchTotalPosts()
+            this.fetchPosts(this.getCurrentPage);
         }
     }
     </script>
-    
-    
-    <style>
-    
-    </style>
+<style>
+  .pagination-container {
+    display: flex;
+    column-gap: 10px;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: #0d6efd;
+    border: 1px solid #0d6efd;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: #2988c8;
+  }
+</style>

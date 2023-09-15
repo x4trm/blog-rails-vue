@@ -7,19 +7,28 @@ const state = {
     posts:[],
     comments:[],
     postErrors:[],
-    postSuccess:[]
+    postSuccess:[],
+    totalPosts:0,
+    currentPage:1
 }
 const getters = {
     allPosts: (state) => state.posts,
     allComments: (state) => state.comments,
     allPostErrors: (state) => state.postErrors,
-    allPostSuccess: (state) => state.postSuccess
+    allPostSuccess: (state) => state.postSuccess,
+    getTotalPosts: (state) => state.totalPosts,
+    getCurrentPage: (state) => state.currentPage
 }
 
 const actions = {
     async fetchPosts({commit},page){
-        const response = await axios.get(API_URL+`?page=${page ? page : 1}`)
-        commit('setPosts',response.data)
+        const response = await axios.get(API_URL+`?page=${page ? page : 1 }`)
+        commit('setPosts',response.data['posts'])
+        // commit('setTotalPosts',response.data['total_posts'])
+    },
+    async fetchTotalPosts({commit}){
+        const response = await axios.get(API_URL)
+        commit('setTotalPosts',response.data['total_posts'])
     },
     async fetchComments({commit},id){
         const response = await axios.get(API_URL+`${id}/comments`)
@@ -32,6 +41,9 @@ const actions = {
             commit('setSuccessPost',"Post successfully created")
             router.push("/")
         })
+    },
+    clickPaginate({commit},page){
+        commit('setCurrentPage',page)
     },
     addComment({ commit }, post) {
         axios.post(API_URL + `${post.id}/comments`,{
@@ -111,6 +123,8 @@ const mutations = {
         if(index !== -1)
             state.posts.splice(index, 1, updatedPost);
     },
+    setTotalPosts: (state,totalPosts) => (state.totalPosts = totalPosts),
+    setCurrentPage: (state,currentPage) => (state.currentPage = currentPage)
 }
 export default {
     state,
