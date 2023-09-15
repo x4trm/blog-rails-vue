@@ -9,9 +9,8 @@
         </div>
       </div>
       <p>Total posts: {{ getTotalPosts }}</p>
-      <p>(For debug) Current page: {{ getCurrentPage }}</p>
       <vue-awesome-paginate
-        v-model="getCurrentPage"
+        v-model="currentPage"
         @click="onClickHandler"
         :items-per-page="2"
         :max-pages-shown="5"
@@ -24,15 +23,23 @@
     import {mapGetters, mapActions} from 'vuex';
     export default {
         name: 'Posts',
+        data(){
+          return{
+            currentPage:1
+          }
+        },
         methods: {
-            ...mapActions(['fetchTotalPosts','fetchPosts','clickPaginate']),
+            ...mapActions(['fetchTotalPosts','fetchPosts','clickPaginatePosts']),
             onClickHandler(page){
-                this.clickPaginate(page)
+                this.clickPaginatePosts(page)
                 this.fetchPosts(page)
             }
         },
         computed: {
-            ...mapGetters(['allPosts','getTotalPosts','getCurrentPage'])
+            ...mapGetters(['allPosts','getTotalPosts']),
+            getCurrentPage(){
+              return this.currentPage
+            }
         },
         created() {
             this.fetchTotalPosts()
