@@ -1,4 +1,4 @@
-class CommentsController < ApplicationController
+class Admin::CommentsController < ApplicationController
     before_action :set_post, only: [:index, :create]
     before_action :set_comment, only: [:show, :edit, :update, :destroy]
     
@@ -35,12 +35,12 @@ class CommentsController < ApplicationController
     #   end
     # end
   
-    # DELETE /comments/1
-    # def destroy
-    #   authorize @comment
-    #   @comment.destroy
-    #   head :no_content
-    # end
+    #DELETE /comments/1
+    def destroy
+      authorize @comment
+      @comment.destroy
+      head :no_content
+    end
   
     private
   

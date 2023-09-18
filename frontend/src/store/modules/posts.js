@@ -1,7 +1,8 @@
 import router from '@/router'
 import axios from 'axios'
-
+import auth from './auth'
 const API_URL = 'http://0.0.0.0:3000/posts/'
+const API_ADMIN_URL = 'http://0.0.0.0:3000/admin/posts'
 
 const state = {
     posts:[],
@@ -31,10 +32,14 @@ const actions = {
         const response = await axios.get(API_URL+id)
         commit('setCurrentPost',response.data)
     },
-    async fetchPosts({commit},page){
-        const response = await axios.get(API_URL+`?page=${page ? page : 1 }`)
+    async fetchPosts({commit},{page,isAdmin}){
+        const response = await axios.get(`${isAdmin?API_ADMIN_URL: API_URL}`+`?page=${page ? page : 1 }`)
         commit('setPosts',response.data['posts'])
     },
+    // async fetchAdminPosts({commit},page){
+    //     const response = await axios.get(API_ADMIN_URL+`?page=${page ? page : 1 }`)
+    //     commit('setPosts',response.data['posts'])
+    // },
     async fetchTotalPosts({commit}){
         const response = await axios.get(API_URL)
         commit('setTotalPosts',response.data['total_posts'])
@@ -45,7 +50,7 @@ const actions = {
         commit('setTotalComments',response.data['total_comments'])
     },
     addPost({commit}, post){
-        axios.post(API_URL, post,{withCredentials:true})
+        axios.post(API_ADMIN_URL, post,{withCredentials:true})
         .then((response)=>{
             commit('newPost',response.data)
             commit('setSuccessPost',"Post successfully created")
@@ -81,7 +86,7 @@ const actions = {
         });
     },
     deleteComment({ commit }, post) {
-        axios.delete(API_URL + `/${post.postId}/comments/${post.commentId}`, { withCredentials: true })
+        axios.delete(API_ADMIN_URL + `/${post.postId}/comments/${post.commentId}`, { withCredentials: true })
         .then(() => {
             commit('deleteComment', post.commentId);
         })
@@ -93,7 +98,7 @@ const actions = {
         });
     },
     deletePost({commit},post){
-        axios.delete(API_URL+`${post.id}`,{withCredentials: true})
+        axios.delete(API_ADMIN_URL+`/${post.id}`,{withCredentials: true})
         .then(()=>{
             commit('removePost',post.id)
             commit('setSuccessPost',"Post successfully deleted")
@@ -101,7 +106,7 @@ const actions = {
         })
     },
     updatePost({ commit }, post) {
-        axios.put(API_URL + `${post.id}`,{
+        axios.put(API_ADMIN_URL + `/${post.id}`,{
             post: {
                 title: post.title,
                 body: post.body

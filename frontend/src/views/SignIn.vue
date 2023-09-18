@@ -28,7 +28,7 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['loginUser']),
+        ...mapActions(['loginUser','reload']),
         onLogin(event){
             event.preventDefault();
             const authData = {

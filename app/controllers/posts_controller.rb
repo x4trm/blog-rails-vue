@@ -13,33 +13,33 @@ class PostsController < ApplicationController
       render json: @post
     end
   
-    # POST /posts
-    def create
-      @post = Post.new(post_params)
-      authorize @post
+    # # POST /posts
+    # def create
+    #   @post = Post.new(post_params)
+    #   authorize @post
   
-      if @post.save
-        render json: @post, status: :created
-      else
-        render json: @post.errors, status: :unprocessable_entity
-      end
-    end
+    #   if @post.save
+    #     render json: @post, status: :created
+    #   else
+    #     render json: @post.errors, status: :unprocessable_entity
+    #   end
+    # end
   
-    # PATCH/PUT /posts/1
-    def update
-      if @post.update(post_params)
-        render json: @post
-      else
-        render json: @post.errors, status: :unprocessable_entity
-      end
-    end
+    # # PATCH/PUT /posts/1
+    # def update
+    #   if @post.update(post_params)
+    #     render json: @post
+    #   else
+    #     render json: @post.errors, status: :unprocessable_entity
+    #   end
+    # end
   
-    # DELETE /posts/1
-    def destroy
-      authorize @post
-      @post.destroy
-      head :no_content
-    end
+    # # DELETE /posts/1
+    # def destroy
+    #   authorize @post
+    #   @post.destroy
+    #   head :no_content
+    # end
   
     private
   

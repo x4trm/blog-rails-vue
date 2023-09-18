@@ -15,7 +15,15 @@ class PostPolicy < ApplicationPolicy
     def create?
         @user && @user.admin?
     end
+    def update?
+        return true if @user && user.admin?
+    end
     def destroy?
-        return true if @user.admin?
+        return true if @user && @user.admin?
+    end
+
+    private 
+    def post
+        record
     end
 end

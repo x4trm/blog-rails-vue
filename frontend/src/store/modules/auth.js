@@ -96,7 +96,12 @@ const actions = {
         });
     });
   },
-};
+  reload({commit}){
+    commit("setUserInfo",localStorage.getItem('user'))
+    commit("setUserFromToken",localStorage.getItem('auth_token'))
+  }
+  };
+  
 const mutations = {
   setUserInfo(state, data) {
     state.user = data.data.user;

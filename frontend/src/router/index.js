@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Posts from '../views/Posts'
 import Show from '../views/Show'
-import CreatePost from '../views/CreatePost'
-import UpdatePost from '../views/UpdatePost'
+import CreatePost from '../views/admin/CreatePost'
+import UpdatePost from '../views/admin/UpdatePost'
 import SignUp from '../views/SignUp'
 import SignIn from '../views/SignIn'
 

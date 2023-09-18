@@ -1,6 +1,7 @@
 <template>
     <div>
       <h1>Posts</h1>
+      <span v-if="!userIsAdmin">
       <div v-for="post in allPosts" :key="post.id" class="card w-75 mb-3 mx-auto delayed-div">
         <div class="card-body">
             <h4 class="card-title">{{post.title}}</h4>
@@ -8,16 +9,33 @@
             <router-link class="btn btn-primary" :to="{name:'Show',params:{id:post.id}}">Read More</router-link>
         </div>
       </div>
-      <div class="pag">
-      <p>Total posts: {{ getTotalPosts }}</p>
-      <vue-awesome-paginate
-        v-model="currentPage"
-        @click="onClickHandler"
-        :items-per-page="2"
-        :max-pages-shown="5"
-        :total-items="getTotalPosts"
-      />
+        <div class="pag">
+        <p>Total posts: {{ getTotalPosts }}</p>
+        <vue-awesome-paginate
+          v-model="currentPage"
+          @click="onClickHandler"
+          :items-per-page="2"
+          :max-pages-shown="5"
+          :total-items="getTotalPosts"
+        />
+        </div>
+      </span>
+      <span v-else>      
+        <div v-for="post in allPosts" :key="post.id" class="card w-75 mb-3 mx-auto delayed-div">
+        <div class="card-body">
+            <h4 class="card-title">{{post.title}}</h4>
+            <router-link class="btn btn-primary" :to="{name:'Show',params:{id:post.id}}">Read More</router-link>
+        </div>
       </div>
+        <p>Total posts: {{ getTotalPosts }}</p>
+        <vue-awesome-paginate
+          v-model="currentPage"
+          @click="onClickHandler"
+          :items-per-page="10"
+          :max-pages-shown="5"
+          :total-items="getTotalPosts"
+        />
+      </span>
     </div>
     </template>
     
@@ -31,21 +49,30 @@
           }
         },
         methods: {
-            ...mapActions(['fetchTotalPosts','fetchPosts','clickPaginatePosts']),
+            ...mapActions(['fetchAdminPosts','fetchTotalPosts','fetchPosts','clickPaginatePosts']),
             onClickHandler(page){
                 this.clickPaginatePosts(page)
-                this.fetchPosts(page)
+                // console.log("Methods  ", this.userIsAdmin)
+                this.fetchPosts({page:this.getCurrentPage,isAdmin:this.userIsAdmin})
             }
         },
         computed: {
-            ...mapGetters(['allPosts','getTotalPosts']),
+            ...mapGetters(['allPosts','getTotalPosts','userIsAdmin']),
             getCurrentPage(){
               return this.currentPage
             },
         },
+        watch:{
+          userIsAdmin(newVal){
+              this.fetchTotalPosts()
+              this.fetchPosts({page:this.getCurrentPage,isAdmin:this.userIsAdmin});
+            
+          }
+        },
         created() {
             this.fetchTotalPosts()
-            this.fetchPosts(this.getCurrentPage);
+            this.fetchPosts({page:this.getCurrentPage,isAdmin:this.userIsAdmin});
+            
         }
     }
     </script>
