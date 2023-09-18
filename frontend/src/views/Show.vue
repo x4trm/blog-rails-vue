@@ -14,7 +14,7 @@
         <br />
         <h3>Comments</h3>
         <p>Total comments: {{ getTotalComments }}</p>
-        <div v-for="comment in allComments" :key="comment.id" class="card w-75 mb-3 mx-auto bg-light">
+        <div v-for="comment in allComments" :key="comment.id" class="card w-75 mb-3 mx-auto bg-light delayed-div">
             <div class="card-body">         
                 <p class="card-text"> {{ comment.body }} </p>
                 <span v-if="userIsAdmin" @click="removeComment(comment.id)" class="btn btn-danger" >Delete</span>
@@ -109,5 +109,17 @@
         },
     }
     </script>
-    
+    <style scoped>
+      .delayed-div{
+    animation: 1s ease-out 0s 1 slideInLeft;
+  }
+  @keyframes slideInLeft {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+    </style>
     
