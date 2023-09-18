@@ -2,11 +2,7 @@ class Admin::PostsController < ApplicationController
 before_action :set_post, only: %i[show edit update destroy]
 before_action :require_admin
 
-def require_admin
-    if @user && @user.admin?
-        render json: {errors: {'error'=>"Not authorized"}},status: :unprocessable_entity
-    end
-end
+
 def index
     @posts = Post.paginate(:page => params[:page], :per_page => 10)
     total_posts = Post.count
@@ -45,7 +41,13 @@ end
     end
   
     private
-  
+
+    def require_admin
+      if @user && @user.admin?
+          render json: {errors: {'error'=>"Not authorized"}},status: :unprocessable_entity
+      end
+    end
+    
     def set_post
       @post = Post.find(params[:id])
     end
