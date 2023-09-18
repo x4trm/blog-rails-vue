@@ -2,16 +2,9 @@
     <div ref="document">
         <div class="card w-75 m-3 mx-auto">
             <div class="card-body">
-                <h5 class="card-title fw-bold" v-if="allPosts != undefined && allPosts.length != 0"> {{ post.title }} </h5>
-                <p class="card-text" v-if="allPosts != undefined && allPosts.length != 0"> {{ post.body }}  </p>
+                <h5 v-if="getCurrentPost!=undefined && getCurrentPost!=null" class="card-title fw-bold"> {{ getCurrentPost.title }} </h5>
+                <p v-if="getCurrentPost!=undefined && getCurrentPost!=null" class="card-text" > {{ getCurrentPost.body }}  </p>
                 <router-link to="/" class="btn btn-dark me-1" >Back</router-link>
-                <!-- <router-link :to="{ name: 'UpdatePost'
-                        , params: { 
-                        id: id,
-                        title2: post.title,
-                        body2: post.body  
-                        }
-                    }" class="btn btn-primary me-1" >Update</router-link> -->
                     <router-link v-if="userIsAdmin" :to="{ name: 'UpdatePost'}" class="btn btn-primary me-1" >Update</router-link>
                 <button v-if="userIsAdmin" @click="removePost()" class="btn btn-danger" >Delete</button>
                 <button v-if="userIsAdmin" @click="createPDF" class="btn btn-warning me-1">PDF</button>
@@ -20,7 +13,8 @@
     
         <br />
         <h3>Comments</h3>
-        <div v-for="comment in allComments" :key="comment.id" class="card w-75 mb-3 mx-auto bg-light">
+        <p>Total comments: {{ getTotalComments }}</p>
+        <div v-for="comment in allComments" :key="comment.id" class="card w-75 mb-3 mx-auto bg-light delayed-div">
             <div class="card-body">         
                 <p class="card-text"> {{ comment.body }} </p>
                 <span v-if="userIsAdmin" @click="removeComment(comment.id)" class="btn btn-danger" >Delete</span>
@@ -42,6 +36,16 @@
         <div v-else>
             <h4>If you want add comment. Sign In!</h4>
         </div>
+
+        <span v-if="getTotalComments!=0">
+      <vue-awesome-paginate
+        v-model="currentPage"
+        @click="changeComments"
+        :items-per-page="7"
+        :max-pages-shown="5"
+        :total-items="getTotalComments"
+      />
+      </span>
     </div>
     </template>
     
@@ -53,12 +57,13 @@
         props: ['id'],
         data() {
             return {
-                post: "",
+                currentPage:1,
+                // post: "",
                 comment: ""
             }
         },
         methods: {
-            ...mapActions(['fetchPosts', 'deletePost', 'fetchComments', 'addComment', 'deleteComment']),
+            ...mapActions(['fetchPost', 'deletePost', 'fetchComments', 'addComment', 'deleteComment','clickPaginateComment']),
             removePost() {
                 const post = {
                     id: this.id,
@@ -88,22 +93,36 @@
                     html2canvas: { dpi: 190, letterRendering: true, useCORS: true},
                     jsPDF: { unit: 'in', format:'letter',orientation:'landscape'}
                 })
+            },
+            changeComments(page){
+                this.clickPaginateComment(page)
+                this.fetchComments({id:this.id,page:page})
             }
         },
         computed: {
-            ...mapGetters(['allPosts','allComments','isLoggedIn','userIsAdmin','getUserID']),
+            ...mapGetters(['getCurrentPost','allPosts','allComments','isLoggedIn','userIsAdmin','getUserID','getTotalComments']),
+            getCurrentPage(){
+              return this.currentPage
+            }
         },
         created() {
-            this.fetchPosts();
-            this.fetchComments(this.id)
+            this.fetchPost(this.id);
+            // this.fetchTotalComments(this.id)
+            this.fetchComments({id:this.id,page:this.currentPage})
         },
-        mounted() {
-            this.post = this.allPosts.find(post => post.id == this.id)
-        }
     }
     </script>
-    
-    
-    <style>
-    
+    <style scoped>
+      .delayed-div{
+    animation: 1s ease-out 0s 1 slideInLeft;
+  }
+  @keyframes slideInLeft {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
     </style>
+    

@@ -4,9 +4,8 @@ class PostsController < ApplicationController
     # GET /posts
     def index
       @posts = Post.paginate(:page => params[:page], :per_page => 2)
-      # @posts = Post.all.order(created_at: :desc)
-      render json: @posts
-      authorize @posts
+      total_posts = Post.count
+      render json: { posts: @posts, total_posts: total_posts}
     end
   
     # GET /posts/1
