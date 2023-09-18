@@ -8,6 +8,7 @@
             <router-link class="btn btn-primary" :to="{name:'Show',params:{id:post.id}}">Read More</router-link>
         </div>
       </div>
+      <div class="pag">
       <p>Total posts: {{ getTotalPosts }}</p>
       <vue-awesome-paginate
         v-model="currentPage"
@@ -16,6 +17,7 @@
         :max-pages-shown="5"
         :total-items="getTotalPosts"
       />
+      </div>
     </div>
     </template>
     
@@ -48,6 +50,11 @@
     }
     </script>
 <style>
+.pag{
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+}
   .pagination-container {
     display: flex;
     column-gap: 10px;
