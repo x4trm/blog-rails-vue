@@ -92,11 +92,8 @@
                 })
             },
             changeComments(page){
-                // console.log(page)
-                // this.fetchPost(this.id);
                 this.clickPaginateComment(page)
                 this.fetchComments({id:this.id,page:page})
-                // console.log(page)
             }
         },
         computed: {
