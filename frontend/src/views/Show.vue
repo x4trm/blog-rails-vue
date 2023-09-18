@@ -36,6 +36,8 @@
         <div v-else>
             <h4>If you want add comment. Sign In!</h4>
         </div>
+
+        <span v-if="getTotalComments!=0">
       <vue-awesome-paginate
         v-model="currentPage"
         @click="changeComments"
@@ -43,6 +45,7 @@
         :max-pages-shown="5"
         :total-items="getTotalComments"
       />
+      </span>
     </div>
     </template>
     
